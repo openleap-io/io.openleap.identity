@@ -1,5 +1,7 @@
+server:
+  port: 0
+instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
 spring:
-
   datasource:
     url: jdbc:postgresql://${POSTGRES_HOST:localhost:5432}/${POSTGRES_DATABASE:identitydb}
     username: ${POSTGRES_USERNAME:postgres}
@@ -44,6 +46,7 @@ eureka:
     service-url:
       defaultZone: ${oleap.eureka.zone} # Must be camelCase
   instance:
+#    instance-id: ${instance-id}
     health-check-url-path: /actuator/health
     hostname: ${oleap.srv.hostname}
     # Request a lease with a validity of 5 seconds. If until then the
@@ -64,9 +67,9 @@ eureka:
     non-secure-port-enabled: true
     prefer-ip-address: true
     secure-port-enabled: false
-    statusPageUrl: ${oleap.srv.protocol}://${oleap.srv.hostname}:${server.port}/actuator/info
-    healthCheckUrl: ${oleap.srv.protocol}://${oleap.srv.hostname}:${server.port}/actuator/health
-    homePageUrl: ${oleap.srv.protocol}://${oleap.srv.hostname}:${server.port}/
+#    statusPageUrl: ${oleap.srv.protocol}://${oleap.srv.hostname}:${server.port}/actuator/info
+#    healthCheckUrl: ${oleap.srv.protocol}://${oleap.srv.hostname}:${server.port}/actuator/health
+#    homePageUrl: ${oleap.srv.protocol}://${oleap.srv.hostname}:${server.port}/
 
 
 management:
@@ -75,8 +78,5 @@ management:
       exposure:
         include: "*"
 
-server:
-  port: 8081
-  tomcat:
-    max-swallow-size: -1
+
       
