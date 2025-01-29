@@ -1,15 +1,17 @@
 package io.openleap.identity.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.DiscriminatorValue;
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 
 import java.time.Instant;
 
 @Entity
-@DiscriminatorValue("client_principal")
-public class ClientPrincipal extends Principal {
-
+@Table(name = "client_principal")
+public class ClientPrincipal {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private Boolean disabled = false;
+    private Boolean locked = false;
     private String clientId;
     private Instant clientIdIssuedAt;
     private String clientSecret;
@@ -29,6 +31,39 @@ public class ClientPrincipal extends Principal {
     private String clientSettings;
     @Column(length = 2000)
     private String tokenSettings;
+    private String instanceId;
+
+    public String getInstanceId() {
+        return instanceId;
+    }
+
+    public void setInstanceId(String instanceId) {
+        this.instanceId = instanceId;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Boolean getDisabled() {
+        return disabled;
+    }
+
+    public void setDisabled(Boolean disabled) {
+        this.disabled = disabled;
+    }
+
+    public Boolean getLocked() {
+        return locked;
+    }
+
+    public void setLocked(Boolean locked) {
+        this.locked = locked;
+    }
 
     public String getClientId() {
         return clientId;

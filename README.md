@@ -33,46 +33,46 @@ mvn spring-boot:run
 
 ```mermaid
 classDiagram
-direction BT
-class ClientPrincipal {
-  - String tokenSettings
-  - String clientId
-  - String clientSettings
-  - String clientSecret
-  - String scopes
-  - Instant clientSecretExpiresAt
-  - String postLogoutRedirectUris
-  - Instant clientIdIssuedAt
-  - String authorizationGrantTypes
-  - String redirectUris
-  - String clientName
-  - String clientAuthenticationMethods
-}
-class Principal {
-  - Long id
-  - Boolean disabled
-  - Set~Profile~ profiles
-  - Boolean locked
-}
-class Profile {
-  - String name
-  - Boolean enabled
-  - Long id
-  - Boolean defaultProfile
-  - Set~Role~ roles
-}
-class Role {
-  - String name
-}
-class UserPrincipal {
-  - String password
-  - String username
-}
+    direction BT
+    class ClientPrincipal {
+        - String clientAuthenticationMethods
+        - String tokenSettings
+        - Boolean locked
+        - String clientSecret
+        - String clientId
+        - String clientName
+        - Long id
+        - Instant clientSecretExpiresAt
+        - String scopes
+        - Boolean disabled
+        - String redirectUris
+        - String authorizationGrantTypes
+        - String postLogoutRedirectUris
+        - String clientSettings
+        - Instant clientIdIssuedAt
+    }
+    class Profile {
+        - Long id
+        - Boolean enabled
+        - Set~Role~ roles
+        - String name
+        - Boolean defaultProfile
+    }
+    class Role {
+        - String name
+    }
+    class UserPrincipal {
+        - Long id
+        - Set~Profile~ profiles
+        - Boolean disabled
+        - String password
+        - Boolean locked
+        - String username
+    }
 
-ClientPrincipal  -->  Principal 
-Principal "1" *--> "profiles *" Profile 
-Profile "1" *--> "roles *" Role 
-UserPrincipal  -->  Principal 
+    Profile "1" *--> "roles *" Role
+    UserPrincipal "1" *--> "profiles *" Profile
+
 
 ```
 

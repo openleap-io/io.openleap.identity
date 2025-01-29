@@ -6,20 +6,19 @@
       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
 
     <changeSet id="202501181245" author="Kiril.Arsov">
-        <createTable tableName="principal">
+        <createTable tableName="client_principal">
             <column autoIncrement="true" name="id" type="BIGSERIAL">
-                <constraints primaryKey="true" primaryKeyName="userr_pkey"/>
+                <constraints primaryKey="true" primaryKeyName="client_principal_pkey"/>
             </column>
-            <column name="principal_type" type="VARCHAR(30)"/>
-            <column name="username" type="VARCHAR(255)"/>
-            <column name="password" type="VARCHAR(255)"/>
             <column name="disabled" type="BOOL"/>
             <column name="locked" type="BOOL"/>
             <column name="client_id" type="VARCHAR(100)"/>
             <column name="client_id_issued_at" type="timestamp"/>
             <column name="client_secret" type="VARCHAR(200)"/>
             <column name="client_secret_expires_at" type="timestamp"/>
-            <column name="client_name" type="VARCHAR(200)"/>
+            <column name="client_name" type="VARCHAR(200)" >
+                <constraints nullable="false" unique="true"/>
+            </column>
             <column name="client_authentication_methods" type="VARCHAR(1000)"/>
             <column name="authorization_grant_types" type="VARCHAR(1000)"/>
             <column name="redirect_uris" type="VARCHAR(1000)"/>
@@ -27,18 +26,27 @@
             <column name="scopes" type="VARCHAR(1000)"/>
             <column name="client_settings" type="VARCHAR(2000)"/>
             <column name="token_settings" type="VARCHAR(2000)"/>
-
+            <column name="instance_id" type="VARCHAR(200)"/>
         </createTable>
-        <createTable tableName="principal_profile">
-            <column name="principal_id" type="BIGINT">
+        <createTable tableName="user_principal">
+            <column autoIncrement="true" name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" primaryKeyName="user_principal_pkey"/>
+            </column>
+            <column name="username" type="VARCHAR(255)"/>
+            <column name="password" type="VARCHAR(255)"/>
+            <column name="disabled" type="BOOL"/>
+            <column name="locked" type="BOOL"/>
+        </createTable>
+        <createTable tableName="user_principal_profile">
+            <column name="user_principal_id" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
             <column name="profile_id" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
         </createTable>
-        <addPrimaryKey constraintName="pk_principal_profile" tableName="principal_profile"
-                       columnNames="principal_id, profile_id"/>
+        <addPrimaryKey constraintName="pk_user_principal_profile" tableName="user_principal_profile"
+                       columnNames="user_principal_id, profile_id"/>
         <createTable tableName="profile_role">
             <column name="id" type="BIGINT">
                 <constraints nullable="false"/>
