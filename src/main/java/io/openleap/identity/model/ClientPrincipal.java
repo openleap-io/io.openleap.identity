@@ -10,6 +10,7 @@ public class ClientPrincipal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String registrationId;
     private Boolean disabled = false;
     private Boolean locked = false;
     private String clientId;
@@ -32,6 +33,14 @@ public class ClientPrincipal {
     @Column(length = 2000)
     private String tokenSettings;
     private String instanceId;
+
+    public String getRegistrationId() {
+        return registrationId;
+    }
+
+    public void setRegistrationId(String registrationId) {
+        this.registrationId = registrationId;
+    }
 
     public String getInstanceId() {
         return instanceId;

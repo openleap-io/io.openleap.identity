@@ -20,8 +20,8 @@ public class ClientPrincipalController {
     }
 
 
-    @DeleteMapping("/{clientName}/{instanceId}")
-    public void removeClientByClientName(@PathVariable String clientName, @PathVariable String instanceId) {
-        registrationService.removeClientByClientName(clientName, instanceId);
+    @DeleteMapping("/{registrationId}/{instanceId}")
+    public void removeClientByRegistrationId(@PathVariable String registrationId, @PathVariable String instanceId) {
+        registrationService.removeClientByClientName(registrationId, instanceId);
     }
 }

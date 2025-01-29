@@ -7,5 +7,5 @@ import org.springframework.data.repository.query.Param;
 public interface ClientPrincipalRepository extends JpaRepository<ClientPrincipal, Long> {
     ClientPrincipal findByClientId(@Param("clientId") String clientId);
 
-    ClientPrincipal findByClientName(@Param("clientName") String clientName);
+    ClientPrincipal findByRegistrationId(@Param("registration_id") String registrationId);
 }

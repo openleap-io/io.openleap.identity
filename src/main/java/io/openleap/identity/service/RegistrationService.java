@@ -18,9 +18,10 @@ public class RegistrationService {
     }
 
     public ClientPrincipal registerClient(ClientPrincipal cp) {
-        ClientPrincipal clientPrincipal = clientPrincipalRepository.findByClientName(cp.getClientName());
+        String registrationId = getRegistrationId(cp.getClientSettings());
+        ClientPrincipal clientPrincipal = clientPrincipalRepository.findByRegistrationId(registrationId);
         if (clientPrincipal == null) {
-            return createAndSaveClient(cp);
+            return createAndSaveClient(cp, registrationId);
         }
         String instanceIds = getInstanceId(clientPrincipal.getClientSettings());
         String instanceId = getInstanceId(cp.getClientSettings());
@@ -37,8 +38,9 @@ public class RegistrationService {
         return clientPrincipalRepository.save(clientPrincipal);
     }
 
-    private ClientPrincipal createAndSaveClient(ClientPrincipal cp) {
+    private ClientPrincipal createAndSaveClient(ClientPrincipal cp, String registrationId) {
         ClientPrincipal newClientPrincipal = new ClientPrincipal();
+        newClientPrincipal.setRegistrationId(registrationId);
         newClientPrincipal.setDisabled(false);
         newClientPrincipal.setLocked(false);
         newClientPrincipal.setClientId(cp.getClientId());
@@ -65,8 +67,19 @@ public class RegistrationService {
         }
     }
 
-    public void removeClientByClientName(String clientName, String instanceId) {
-        ClientPrincipal clientPrincipal = clientPrincipalRepository.findByClientName(clientName);
+    private String getRegistrationId(String clientSettings) {
+        Pattern pattern = Pattern.compile("registration_id=([^,}]+)");
+        Matcher matcher = pattern.matcher(clientSettings);
+
+        if (matcher.find()) {
+            return matcher.group(1);
+        } else {
+            return null;
+        }
+    }
+
+    public void removeClientByClientName(String registrationId, String instanceId) {
+        ClientPrincipal clientPrincipal = clientPrincipalRepository.findByRegistrationId(registrationId);
         if (clientPrincipal != null && instanceId != null && clientPrincipal.getInstanceId() != null) {
             List<String> newInstanceIds = Arrays.stream(clientPrincipal.getInstanceId().split(",")).filter(id -> !id.equals(instanceId)).toList();
             if (newInstanceIds.isEmpty()) {
