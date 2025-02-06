@@ -10,12 +10,12 @@
             <column autoIncrement="true" name="id" type="BIGSERIAL">
                 <constraints primaryKey="true" primaryKeyName="client_principal_pkey"/>
             </column>
-            <column name="registration_id" type="VARCHAR(200)">
-                <constraints nullable="false" unique="true"/>
-            </column>
+            <column name="registration_id" type="VARCHAR(200)"/>
             <column name="disabled" type="BOOL"/>
             <column name="locked" type="BOOL"/>
-            <column name="client_id" type="VARCHAR(100)"/>
+            <column name="client_id" type="VARCHAR(100)">
+                <constraints nullable="false" unique="true"/>
+            </column>
             <column name="client_id_issued_at" type="timestamp"/>
             <column name="client_secret" type="VARCHAR(200)"/>
             <column name="client_secret_expires_at" type="timestamp"/>

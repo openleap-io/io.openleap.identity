@@ -2,46 +2,39 @@ package io.openleap.identity.service;
 
 import io.openleap.identity.model.ClientPrincipal;
 import io.openleap.identity.repository.ClientPrincipalRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Service
 public class RegistrationService {
+    Logger logger = LoggerFactory.getLogger(RegistrationService.class);
+
     private final ClientPrincipalRepository clientPrincipalRepository;
+
 
     public RegistrationService(ClientPrincipalRepository clientPrincipalRepository) {
         this.clientPrincipalRepository = clientPrincipalRepository;
     }
 
     public ClientPrincipal registerClient(ClientPrincipal cp) {
-        String registrationId = getRegistrationId(cp.getClientSettings());
-        ClientPrincipal clientPrincipal = clientPrincipalRepository.findByRegistrationId(registrationId);
+        ClientPrincipal clientPrincipal = clientPrincipalRepository.findByClientId(cp.getClientId());
         if (clientPrincipal == null) {
-            return createAndSaveClient(cp, registrationId);
+            logger.debug("Registering new clientId: {}", cp.getClientId());
+            return createAndSaveClient(cp);
         }
-        String instanceIds = getInstanceId(clientPrincipal.getClientSettings());
-        String instanceId = getInstanceId(cp.getClientSettings());
-        if (instanceId == null ||
-                (instanceIds != null && Arrays.stream(instanceIds.split(",")).toList().contains(instanceId))) {
-            return clientPrincipal;
-        }
-        if (instanceIds == null) {
-            clientPrincipal.setInstanceId(instanceId);
-        } else {
-            clientPrincipal.setInstanceId(instanceIds.concat(",").concat(instanceId));
-        }
-
-        return clientPrincipalRepository.save(clientPrincipal);
+        logger.debug("Client with existing clientId: {} found. Returning client.", cp.getClientId());
+        return clientPrincipal;
     }
 
-    private ClientPrincipal createAndSaveClient(ClientPrincipal cp, String registrationId) {
+    private ClientPrincipal createAndSaveClient(ClientPrincipal cp) {
         ClientPrincipal newClientPrincipal = new ClientPrincipal();
-        newClientPrincipal.setRegistrationId(registrationId);
+        newClientPrincipal.setRegistrationId(getRegistrationId(cp.getClientSettings()));
         newClientPrincipal.setDisabled(false);
+        newClientPrincipal.setClientIdIssuedAt(cp.getClientIdIssuedAt());
         newClientPrincipal.setLocked(false);
         newClientPrincipal.setClientId(cp.getClientId());
         newClientPrincipal.setClientSecret(cp.getClientSecret());
@@ -75,19 +68,6 @@ public class RegistrationService {
             return matcher.group(1);
         } else {
             return null;
-        }
-    }
-
-    public void removeClientByClientName(String registrationId, String instanceId) {
-        ClientPrincipal clientPrincipal = clientPrincipalRepository.findByRegistrationId(registrationId);
-        if (clientPrincipal != null && instanceId != null && clientPrincipal.getInstanceId() != null) {
-            List<String> newInstanceIds = Arrays.stream(clientPrincipal.getInstanceId().split(",")).filter(id -> !id.equals(instanceId)).toList();
-            if (newInstanceIds.isEmpty()) {
-                clientPrincipalRepository.delete(clientPrincipal);
-            } else {
-                clientPrincipal.setInstanceId(String.join(",", newInstanceIds));
-                clientPrincipalRepository.save(clientPrincipal);
-            }
         }
     }
 }

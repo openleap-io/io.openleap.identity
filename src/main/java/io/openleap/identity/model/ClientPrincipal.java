@@ -32,7 +32,7 @@ public class ClientPrincipal {
     private String clientSettings;
     @Column(length = 2000)
     private String tokenSettings;
-    private String instanceId;
+    private String instanceId = "static";
 
     public String getRegistrationId() {
         return registrationId;
