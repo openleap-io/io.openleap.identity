@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd
+      http://www.liquibase.org/xml/ns/pro
+      http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.1.xsd">
+    <changeSet id="202502081345" author="Kiril.Arsov">
+        <sql>
+            INSERT INTO public.profile (id, enabled, default_profile, name) VALUES (1, true, true, 'profile1');
+            INSERT INTO public.profile_role (id, name) VALUES (1, 'admin');
+            INSERT INTO public.user_principal (id, username, password, disabled, locked) VALUES (1, 'user', 'admin', false, false);
+            INSERT INTO public.user_principal_profile (user_principal_id, profile_id) VALUES (1, 1);
+        </sql>
+
+    </changeSet>
+
+</databaseChangeLog>
