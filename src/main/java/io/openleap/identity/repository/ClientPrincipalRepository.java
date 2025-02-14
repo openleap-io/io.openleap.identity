@@ -15,7 +15,7 @@ public interface ClientPrincipalRepository extends JpaRepository<ClientPrincipal
     @Modifying
     void deleteByInstanceId(@Param("instance_id") String instanceId);
 
-    @NativeQuery("SELECT DISTINCT instance_id FROM client_principal")
+    @NativeQuery("SELECT DISTINCT instance_id FROM client_principal where CAST(client_id_issued_at AS TIMESTAMP) < (CURRENT_TIMESTAMP - INTERVAL '1 DAY')")
     List<String> getAllRegisteredInstances();
 
     @Modifying
