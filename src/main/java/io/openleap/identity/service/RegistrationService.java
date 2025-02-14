@@ -50,17 +50,23 @@ public class RegistrationService {
     }
 
     private String getInstanceId(String clientSettings) {
+        if (clientSettings == null) {
+            return "static";
+        }
         Pattern pattern = Pattern.compile("instance_id=([^,}]+)");
         Matcher matcher = pattern.matcher(clientSettings);
 
         if (matcher.find()) {
             return matcher.group(1);
         } else {
-            return null;
+            return "static";
         }
     }
 
     private String getRegistrationId(String clientSettings) {
+        if (clientSettings == null) {
+            return null;
+        }
         Pattern pattern = Pattern.compile("registration_id=([^,}]+)");
         Matcher matcher = pattern.matcher(clientSettings);
 

@@ -9,15 +9,13 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface ClientPrincipalRepository extends JpaRepository<ClientPrincipal, Long> {
+
     ClientPrincipal findByClientId(@Param("clientId") String clientId);
-
-    ClientPrincipal findByRegistrationId(@Param("registration_id") String registrationId);
-
 
     @Modifying
     void deleteByInstanceId(@Param("instance_id") String instanceId);
 
-    @NativeQuery("SELECT instance_id FROM client_principal")
+    @NativeQuery("SELECT DISTINCT instance_id FROM client_principal")
     List<String> getAllRegisteredInstances();
 
     @Modifying

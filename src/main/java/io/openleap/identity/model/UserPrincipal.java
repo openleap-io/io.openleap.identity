@@ -14,6 +14,11 @@ public class UserPrincipal{
     private Boolean locked = false;
     private String username;
     private String password;
+    private String email;
+    private Language language;
+    private String firstName;
+    private String lastName;
+    private Salutation salutation;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "user_principal_profile",
             joinColumns = @JoinColumn(name = "user_principal_id"),
@@ -64,5 +69,45 @@ public class UserPrincipal{
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Language getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(Language language) {
+        this.language = language;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public Salutation getSalutation() {
+        return salutation;
+    }
+
+    public void setSalutation(Salutation salutation) {
+        this.salutation = salutation;
     }
 }

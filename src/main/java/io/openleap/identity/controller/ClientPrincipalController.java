@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/registration")
+@RequestMapping("/identity/registration")
 public class ClientPrincipalController {
 
     private final RegistrationService registrationService;
